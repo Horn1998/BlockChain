@@ -21,6 +21,14 @@ def register(client):
         if result:
             print('用户已经注册账户')
             return 'Invalid register data', 404
+        if 'business_id' in client.keys():
+            client['type'] = 'miner'
+            result = register_col.find_one({'business_id': client['business_id']})
+            if result:
+                print('企业已经注册账户')
+                return 'Invalid register data', 404
+        else:
+            client['type'] = 'user'
         register_col.insert_one(client)
         return "success insert client", 200
     except Exception:

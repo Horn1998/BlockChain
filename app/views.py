@@ -1,4 +1,5 @@
 from flask import render_template, redirect, request
+from API.Concentrated import trade as transaction
 from Mongo.MongoDB import register, trade
 from Client import Client
 from app import app
@@ -84,10 +85,15 @@ def submit_textarea():
         traceback.print_exc()
         return redirect('/')
 
-@app.route('/option')
-def option():
+
+@app.route('/option1')
+def option1():
     return render_template('option.html', title='交易申请')
 
+
+@app.route('/option2')
+def option2():
+    return render_template('verified.html', title='能源认证')
 
 #注册账户
 @app.route('/register', methods=['POST'])
@@ -130,6 +136,33 @@ def trade():
         return redirect('/option')
 
 
+#用户操作函数
+@app.route('/verified', methods=['POST'])
+def verified():
+    try:
+        print(request.form)
+        c, miner=Client(), {}
+        miner['business_id'] = request.form['id'] #该id是否有交易许可
+        miner['position'] = float(request.form['position'])
+        miner['power_type'] = request.form['power']
+        miner['limit'] = int(request.form['limit'])
+        miner['pvt_key'], miner['pub_key'], miner['address'] = c.pvt_pkcs, c.pub_pkcs, c.get_address()
+        miner['phone'] = request.form['phone']
+        register(miner)
+        # Submit a transaction
+        return redirect('/option2')
+    except Exception:
+        traceback.print_exc()
+        return redirect('/option2')
+
 
 def timestamp_to_string(epoch_time):
     return datetime.datetime.fromtimestamp(epoch_time).strftime('%H:%M')
+
+
+@app.route('/option3')
+def option3():
+    labels = ['参与方', '电量', '价差', '收益']
+    p_answer, q_answer = transaction()
+    print(p_answer)
+    return render_template('result.html', labels=labels, p=p_answer, q=q_answer, title='结果查询')

@@ -1,25 +1,8 @@
-{% extends "base.html" %}
+{#<!-- 新 Bootstrap4 核心 CSS 文件 -->#}
+{% extends "home.html" %}
 {% block content %}
-<head>
-<meta charset="utf-8">
-
-<!-- 新 Bootstrap4 核心 CSS 文件 -->
-<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
-
-<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-
-<!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
-<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
-
-<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
-<script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-
-</head>
-
-<body>
     <!-- 登录表单 -->
-    <form style="margin-left:500px;margin-top:200px;" action="/trade" method="post" id="trade">
+    <form style="margin-left:200px;margin-top:100px;width:300px; float:left" action="/trade" method="post" id="trade">
         <div class="form-group" >
             <label for="power" style="display:inline;">交易电量：</label>
             <input type="text" class="form-control" id="power" style="display:inline;width:200px;" name="power" autocomplete="off"/>
@@ -29,6 +12,13 @@
             <select id = 'character' name = 'character' class="form-control" style="display:inline;width:200px;  border-radius: 5%">
               <option value="0">购电方</option>
               <option value="1">售电方</option>
+           </select>
+        </div>
+          <div class="form-group">
+            <label for="type" style="display:inline;">交易类型：</label>
+            <select id = 'type' name = 'type' class="form-control" style="display:inline;width:200px;  border-radius: 5%">
+              <option value="0">电力库交易模式</option>
+              <option value="1">双边协商交易模式</option>
            </select>
         </div>
         <div class="form-group">
@@ -42,12 +32,19 @@
         <input type="submit"  class="btn btn-primary">
     </form>
     <!-- 登录表单 -->
-    <form style="margin-left:500px;margin-top:200px;" action="/register" id="register" method="post" >
+    <form style="margin-left:700px;padding-top:100px;width:400px" action="/register" id="register" method="post" >
         <div class="form-group">
             <label for="phone" stype="display:inline;">手机电话：</label>
             <input type="text" name="phone" class="form-control" id="phone" style="display:inline;width:200px;"autocomplete="off" />
-            <input type="submit"  class="btn btn-primary"  value="注册" style="margin-left: 3%;">
         </div>
+         <div class="form-group">
+            <label for="name" stype="display:inline;">姓名：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+            <input type="text" name="name" class="form-control" id="name" style="display:inline;width:200px;"autocomplete="off" />
+        </div>
+        <div class="form-group">
+            <label for="IDCARD" stype="display:inline;">身份证：&nbsp&nbsp&nbsp</label>
+            <input type="text" name="IDCARD" class="form-control" id="IDCARD" style="display:inline;width:200px;"autocomplete="off" />
+        </div>
+            <input type="submit"  class="btn btn-primary"  value="注册" style="margin-left: 3%;">
     </form>
-</body>
 {% endblock %}

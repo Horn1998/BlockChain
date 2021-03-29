@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<style>
+    .sitebar{
+        font-size: large;
+        color:white;
+        height: 60px;
+        position:absolute;
+    }
+</style>
+ <div style="background-color: black; height: 100px; width:100%;margin-top:-20px"><center><h1 style="padding-top:20px; color:white">基于区块链的电力交易系统</h1></center></div>
+{#<div style="font-size: larger;height: 100px; color:white; font-weight: bold; width:100%; background-color: black; z-index:2"> 电力市场交易系统 </div>#}
+<div id="sidebar" style="width:20px">
+        {% block sidebar %}
+{#   <div style="font-size: larger;height: 100px; color:white; font-weight: bold; width:100%; background-color: black"> 电力市场交易系统 </div>#}
+   <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation" style="width:10%;height:100%;background-color: #0b92e0">
+      <ul class="nav sidebar-nav">
+        <li class="sidebar" style="height:100px; background-color:black">
+        <li> <a href="/" class="sitebar" > 矿工操作 </a> </li>
+        <li> <a href="/option1" class="sitebar"> 用户操作 </a> </li>
+        <li> <a href="/option2" class="sitebar"> 能源认证 </a> </li>
+        <li> <a href="/option3" class="sitebar"> 结果查询 </a> </li>
+      </ul>
+    </nav>
+        {% endblock %}
+</div>
+<div id="content" style="padding-left: 10%">
+    {% block content %}{% endblock %}
+</div>

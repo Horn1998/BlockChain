@@ -1,21 +1,16 @@
 <!-- extend base layout -->
-{% extends "base.html" %}
-
+{% extends "home.html" %}
 {% block content %}
 	<br>
-
-	<center>
-	<form action="/submit" id="textform" method="post">
-	    <textarea name="content" rows="4" cols="50" placeholder="Just write whatever you want to..."></textarea>
-	    <br>
-	    <input type="text" name="author" placeholder="Your name">
-	    <input type="submit" value="Post">
+	<form action="/submit" id="textform" method="post"style="margin-left:500px;margin-top:20px;" >
+{#	    <textarea name="content" rows="4" cols="50" placeholder="Just write whatever you want to..."></textarea>#}
+{#	    <br>#}
+	    <input type="text" name="author" placeholder="ID Index">
+	    <input type="submit" value="Search">
 	</form>
-	</center>
-
 	<br>
 
-	<a href="{{node_address}}/mine" target="_blank"><button>Request to mine</button></a>
+	<a href="{{node_address}}/mine" target="_blank" style="margin-left:500px;margin-top:20px;"><button>Request to mine</button></a>
 	<a href="/"><button>Resync</button></a>
 
 	<div style="margin: 20px;">
