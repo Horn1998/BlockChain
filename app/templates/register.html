@@ -1,0 +1,61 @@
+{#{% extends "home.html" %}#}
+{#{% block content %}#}
+<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<style type="text/css">
+     body{background: url("/Assets/image/register.jpeg") no-repeat;background-size:cover;font-size: 16px;}
+			.form{background: rgba(255,255,255,0.2);width:400px;margin:100px auto;}
+
+</style>
+{#<center><h1>注册界面</h1></center>#}
+    <!-- 登录表单 -->
+    <form style="margin-left:400px;margin-top:200px;width:400px; float:left" action="/miner_register" method="post" id="trade">
+        <h2>{{ title1 }}</h2>
+        <div class="form-group" >
+            <label for="id" style="display:inline;">企业ID：&nbsp&nbsp&nbsp&nbsp </label>
+            <input type="text" class="form-control" id="id" style="display:inline;width:200px;" name="id" autocomplete="off"/>
+        </div>
+          <div class="form-group">
+            <label for="position" style="display:inline;">地理位置：</label>
+            <select id = 'position' name = 'position' class="form-control" style="display:inline;width:200px;  border-radius: 5%">
+              <option value="0">张家口</option>
+              <option value="1">石家庄</option>
+           </select>
+        </div>
+        <div class="form-group">
+            <label for="power" style="display:inline;">能源类型：</label>
+             <select id = 'power' name = 'power' class="form-control" style="display:inline;width:200px;  border-radius: 5%">
+              <option value="0">风能</option>
+              <option value="1">光能</option>
+              <option value="2">水能</option>
+              <option value="3">燃气</option>
+           </select>
+        </div>
+           <div class="form-group">
+            <label for="limit" style="display:inline;">发电额度：</label>
+            <input type="text" class="form-control" id="limit" style="display:inline;width:200px;"autocomplete="off" name="limit"/>
+        </div>
+        <div class="form-group">
+            <label for="phone" style="display:inline;">手机电话：</label>
+            <input type="text" class="form-control" id="phone" style="display:inline;width:200px;"autocomplete="off" name="phone"/>
+        </div>
+        <input type="submit" value="注册" class="btn btn-primary">
+    </form>
+     <!-- 登录表单 -->
+    <form style="margin-left:900px;padding-top:200px;width:400px" action="/user_register" id="register" method="post" >
+        <h2>{{ title2 }}</h2>
+        <div class="form-group">
+            <label for="phone" stype="display:inline;">手机电话：</label>
+            <input type="text" name="phone" class="form-control" id="phone" style="display:inline;width:200px;"autocomplete="off" />
+        </div>
+         <div class="form-group">
+            <label for="name" stype="display:inline;">姓名：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
+            <input type="text" name="name" class="form-control" id="name" style="display:inline;width:200px;"autocomplete="off" />
+        </div>
+        <div class="form-group">
+            <label for="IDCARD" stype="display:inline;">身份证：&nbsp&nbsp&nbsp</label>
+            <input type="text" name="IDCARD" class="form-control" id="IDCARD" style="display:inline;width:200px;"autocomplete="off" />
+        </div>
+            <input type="submit"  class="btn btn-primary"  value="注册" style="margin-left: 3%;">
+    </form>
+{#{% endblock %}#}

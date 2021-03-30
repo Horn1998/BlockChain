@@ -1,24 +1,18 @@
 from flask import render_template, redirect, request
 from API.Concentrated import trade as transaction
-from Mongo.MongoDB import register, trade
-from Client import Client
 from app import app
 import datetime
-import json
 import traceback
 import requests
+import json
 
 # The node with which our application interacts, there can be multiple
 # such nodes as well.
-CONNECTED_NODE_ADDRESS = "http://127.0.0.1:8001"
-
-
+CONNECTED_NODE_ADDRESS = "http://127.0.0.1:8000"
 requests.adapters.DEFAULT_RETRIES = 5 # 增加重连次数
 s = requests.session()
 s.keep_alive = False # 关闭多余连接
-
 posts = []
-
 
 
 def fetch_posts():
@@ -45,12 +39,12 @@ def fetch_posts():
         traceback.print_exc()
 
 
-
 #加载主页
-@app.route('/')
-def index():
+@app.route('/option0')
+def option0():
     fetch_posts()
-    return render_template('index.html',
+    print(request.host_url, CONNECTED_NODE_ADDRESS)
+    return render_template('block.html',
                            title='去中心化网络 '
                                  '区块链查询',
                            posts=posts,
@@ -59,59 +53,42 @@ def index():
 
 
 #发起交易
-@app.route('/submit', methods=['POST'])
-def submit_textarea():
+@app.route('/search', methods=['POST'])
+def search_block():
     """
     Endpoint to create a new transaction via our application.
     """
     try:
-        post_content = request.form["content"]
-        author = request.form["author"]
+        # post_content = request.form["content"]
+        bID = request.form["blockID"]
+        fetch_posts()
+        new_posts = []
+        for item in posts:
+            if item['index'] == int(bID):
+                new_posts.append(item)
+        return render_template('block.html',
+                               title='去中心化网络 '
+                                     '区块链查询',
+                               posts=new_posts,
+                               node_address=CONNECTED_NODE_ADDRESS,
+                               readable_time=timestamp_to_string)
 
-        post_object = {
-            'author': author,
-            'content': post_content,
-        }
 
-        # Submit a transaction
-        new_tx_address = "{}/new_transaction".format(CONNECTED_NODE_ADDRESS)
-
-        requests.post(new_tx_address,
-                      json=post_object,
-                      headers={'Content-type': 'application/json'})
-
-        return redirect('/')
+        return redirect('/option0')
     except Exception:
         traceback.print_exc()
-        return redirect('/')
+        return redirect('/option0')
 
 
+def timestamp_to_string(epoch_time):
+    return datetime.datetime.fromtimestamp(epoch_time).strftime('%H:%M')
+
+
+#———————————————————————————————————————————————————#
+#交易申请
 @app.route('/option1')
 def option1():
     return render_template('option.html', title='交易申请')
-
-
-@app.route('/option2')
-def option2():
-    return render_template('verified.html', title='能源认证')
-
-#注册账户
-@app.route('/register', methods=['POST'])
-def registers():
-    """
-    client属性
-    :param phone:电话号码
-    :param pvt_key:私
-    :param pub_key:公钥
-    :param address: 地址
-    :return:
-    """
-    c, client = Client(), {}
-    client['pvt_key'], client['pub_key'], client['address'] =c.pvt_pkcs, c.pub_pkcs, c.get_address()
-    client['phone'] = request.form['phone']
-    register(client)
-    return render_template('option.html',
-                           title='用户操作')
 
 
 #用户操作函数
@@ -130,36 +107,13 @@ def trade():
         requests.post(new_tx_address,
                       json=option,
                       headers={'Content-type': 'application/json'})
-        return redirect('/option')
+        return redirect('/option1')
     except Exception:
         traceback.print_exc()
-        return redirect('/option')
+        return redirect('/option1')
 
 
-#用户操作函数
-@app.route('/verified', methods=['POST'])
-def verified():
-    try:
-        print(request.form)
-        c, miner=Client(), {}
-        miner['business_id'] = request.form['id'] #该id是否有交易许可
-        miner['position'] = float(request.form['position'])
-        miner['power_type'] = request.form['power']
-        miner['limit'] = int(request.form['limit'])
-        miner['pvt_key'], miner['pub_key'], miner['address'] = c.pvt_pkcs, c.pub_pkcs, c.get_address()
-        miner['phone'] = request.form['phone']
-        register(miner)
-        # Submit a transaction
-        return redirect('/option2')
-    except Exception:
-        traceback.print_exc()
-        return redirect('/option2')
-
-
-def timestamp_to_string(epoch_time):
-    return datetime.datetime.fromtimestamp(epoch_time).strftime('%H:%M')
-
-
+#————————————————————————————————————————————————————#
 @app.route('/option3')
 def option3():
     labels = ['参与方', '电量', '价差', '收益']

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>登录界面</title>
+		<!--用百度的静态资源库的cdn安装bootstrap环境-->
+		<!-- Bootstrap 核心 CSS 文件 -->
+		<link href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+		<!--font-awesome 核心我CSS 文件-->
+		<link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+		<!-- 在bootstrap.min.js 之前引入 -->
+		<script src="http://apps.bdimg.com/libs/jquery/2.0.0/jquery.min.js"></script>
+		<!-- Bootstrap 核心 JavaScript 文件 -->
+		<script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<!--jquery.validate-->
+{#		<script type="text/javascript" src="js/jquery.validate.min.js" ></script>#}
+{#		<script type="text/javascript" src="js/message.js" ></script>#}
+		<style type="text/css">
+			{#body{background: url('/Assets/image/bj.png') no-repeat;background-size:cover;font-size: 16px;}#}
+			{#.form{background: rgba(255,255,255,0.2);width:400px;margin:100px auto;}#}
+            /*全局样式表*/
+            body{background: url("/Assets/image/login.jpeg") no-repeat;background-size:cover;font-size: 16px;}
+			.form{background: rgba(255,255,255,0.2);width:400px;margin:100px auto;}
+			#login_form{display: block;}
+			#register_form{display: none;}
+			.fa{display: inline-block;top: 27px;left: 6px;position: relative;color: #ccc;}
+			input[type="text"],input[type="password"]{padding-left:26px;}
+			.checkbox{padding-left:21px;}
+		</style>
+        <script>
+            function get_pvk(){
+                $.ajax({
+                    type:"POST",
+                    url:"/get_pvk",
+                    data:{UserID: $("#UserID").val()},
+                    success: function (result) {
+                        var res = JSON.parse(result)['ans'];
+                        var str = "";
+                        for(i=0; i<res.length; i++)
+                        {
+                            {#str += "<option value = " + i + ">" + res[i] + "</option>"#}
+                            str += "<option>" + res[i] + "</option>"
+                        }
+                        $("#PrivateKey").find('option').remove()
+                        $("#PrivateKey").prepend(str)
+                    }
+                });
+            }
+        </script>
+	</head>
+	<body>
+	<div class="container">
+		<div class="form row">
+			<form action="/verified" method="post" class="form-horizontal col-sm-offset-3 col-md-offset-3" id="login_form">
+				<h3 class="form-title" style="font-family: 'Times New Roman'; font:30px Georgia; text-align:center; margin-right:80px">{{ title }}</h3>
+				<div class="col-sm-9 col-md-9">
+					<div class="form-group">
+						<i class="fa fa-user fa-lg"></i>
+						<input class="form-control required" type="text" placeholder="UserID"  name="UserID" id="UserID" autofocus="autofocus" maxlength="20"/>
+					</div>
+					<div class="form-group" style="margin-top:-10px">
+                        <i class="fa fa-lock fa-lg"></i>
+{#						<input type='text' class="form-control required" type="password" placeholder="PrivateKey" autocomplete="off" name="password" maxlength="8"/>#}
+                        <select onclick="get_pvk()" style="margin-bottom:10px" type='text' class="form-control required" name="PrivateKey" id="PrivateKey">
+                        </select>
+						<label class="checkbox" >
+                            <input type="checkbox" name="remember" value="1" /> <label style="font-family: 'Times New Roman'; font-weight: bolder">Remember me</label>
+						</label>
+						<hr />
+						<a href="/register" id="register_btn" class="">Create an account</a>
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn btn-success pull-right" value="Login "/>
+					</div>
+				</div>
+			</form>
+		</div>
+		</div>
+{#	<script type="text/javascript" src="Assete/js/register.js" ></script>#}
+	</body>
+</html>

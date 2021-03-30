@@ -1,5 +1,5 @@
 from flask import Flask
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='Assets')
 
-from app import views
+from app import views, login

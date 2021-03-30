@@ -1,11 +1,14 @@
 # -*- coding:utf-8 -*-
 from flask import Flask, request
+from hashlib import sha256, new
+import requests
+import traceback
+import chardet
 import rsa
 import json
 import time
-import requests
-import traceback
-from hashlib import sha256, new
+
+
 
 # app = Flask(__name__)
 
@@ -66,64 +69,6 @@ class Client:
         return two_step.hexdigest()
 
 
-#用户注册
-# @app.route('/client_register', methods=['POST'])
-def register():
-    nc = Client()
-    pass  #写入mongodb
-    clients.append(nc)
-    return 'success', 200
-
-
-#获得数字签名
-# @app.route('/get_sign', methods=['POST'])
-# def get_sign():
-#     verify_data = request.get_json()
-#     target_name = verify_data['target_name']
-#     #验证目的地址合法性
-#     content, pk = '', ''
-#     for client in clients:
-#         if client.name == target_name:
-#             content = client.sign(target_name)
-#             pk = client.pub_pkcs  #不是最终秘钥
-#
-#     verify_data['public_key'] = str(pk)
-#     verify_data['sign'] = str(content)
-#     return json.dumps(verify_data)
-
-
-# @app.route('/verify_sign', methods=['POST'])
-# def verify_address():
-#     try:
-#         verify_data = request.get_json()
-#         source_name = verify_data['source_name']
-#         target_name = verify_data['target_name']
-#         global clients
-#         for client1 in clients:
-#             for client2 in clients:
-#                 if client1.name == source_name and client2.name == target_name:
-#                 # if client1.name == source_name and client2.name == target_name and \
-#                 #         client1.verify_sign(verify_data['target_name'], \
-#                 #                             verify_data['content'].encode('utf-8'), \
-#                 #                             rsa.PublicKey.load_pkcs1(client2.pub_pkcs)):
-#                     # 确认完毕开始付款
-#                     print("确认完毕开始付款", client1.cash, verify_data['cash'])
-#                     if client1.cash > verify_data['cash']:
-#                         client1.cash -= verify_data['cash']
-#                         client2.cash += verify_data['cash']
-#                         timestamp = str(time.time())
-#                         #备份资料方便后续查询
-#                         tx_data = {"source_name": client1.name, "target_name": client2.name, "cash": verify_data['cash'], "timestamp": timestamp}
-#                         tx_hash = sha256(json.dumps(tx_data).encode('utf-8')).hexdigest()
-#                         tx_data['hash'] = tx_hash
-#                         client1.backup.append(tx_data)
-#                         client2.backup.append(tx_data)
-#                         return timestamp
-#         return 'fail'
-#     except Exception:
-#         traceback.print_exc()
-#         return 'fail'
-
 
 #展示所有用户
 # @app.route('/show_client', methods=['GET'])
@@ -157,9 +102,6 @@ def retrieve():
         for index in reversed(finished):
             client.backup.pop(index)
 
-
-
-
 clients.append(Client())
 clients.append(Client())
 
@@ -167,4 +109,5 @@ clients.append(Client())
 if __name__ == '__main__':
     c = Client()
     print(type(c.private_key))
-    print(type(c.pvt_pkcs))
+    print(c.pvt_pkcs)
+    print(chardet.detect(c.pvt_pkcs))

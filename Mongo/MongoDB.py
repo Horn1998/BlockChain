@@ -8,7 +8,7 @@ transaction_col = db['transaction']
 block_col = db['block']
 
 #用户注册
-def register(client):
+def mongo_register(client):
     try:
         print('执行mongo用户注册函数')
         required_fields = ['phone', 'pvt_key', 'pub_key', 'address']
@@ -17,16 +17,16 @@ def register(client):
             if not client.get(field):
                 print('数据不全')
                 return "Invalid register data", 404
-        result = register_col.find_one({'phone': client['phone']})
-        if result:
-            print('用户已经注册账户')
-            return 'Invalid register data', 404
+        # result = register_col.find_one({'phone': client['phone']})
+        # if result:
+        #     print('用户已经注册账户')
+        #     return 'Invalid register data', 404
         if 'business_id' in client.keys():
             client['type'] = 'miner'
-            result = register_col.find_one({'business_id': client['business_id']})
-            if result:
-                print('企业已经注册账户')
-                return 'Invalid register data', 404
+            # result = register_col.find_one({'business_id': client['business_id']})
+            # if result:
+            #     print('企业已经注册账户')
+            #     return 'Invalid register data', 404
         else:
             client['type'] = 'user'
         register_col.insert_one(client)
@@ -35,7 +35,7 @@ def register(client):
         traceback.print_exc()
 
 #交易记录
-def trade(tx):
+def mongo_trade(tx):
     try:
         required_fields = ['source_address', 'target_address', 'cash', 'power']
         for field in required_fields:
@@ -64,7 +64,6 @@ def bc_write(block):
 def bc_read():
     """
     用于恢复区块链
-
     :return: chain_dump list
     """
     try:
@@ -75,6 +74,15 @@ def bc_read():
         return chain_dump
     except Exception:
         traceback.print_exc()
+
+
+#读取用户信息
+def user_read():
+    user_dump = []
+    for item in register_col.find():
+        user_dump.append(item)
+    return user_dump
+
 
 if __name__ == '__main__':
     bc_read()
